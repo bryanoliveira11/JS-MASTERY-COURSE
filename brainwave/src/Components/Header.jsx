@@ -8,12 +8,20 @@ import { useState } from "react";
 
 const Header = () => {
   const pathname = useLocation();
-  const [openNavigation, setopenNavigation] = useState(true);
+  const [openNavigation, setopenNavigation] = useState(false);
+
+  const toggleNavigation = () => {
+    setopenNavigation(!openNavigation);
+  };
+
+  const handleClick = () => {
+    setopenNavigation(false);
+  };
 
   return (
     <div
-      className={`fixed top-0 left-0 w-full z-50 bg-[var(--n-8)]/90
-    backdrop-blur-sm border-b border-[var(--n-6)] 
+      className={`fixed top-0 left-0 w-full z-50
+        border-b border-[var(--n-6)] 
     lg:bg-[var(--n-8)]/90 lg:backdrop-blur-sm
      ${
        openNavigation
@@ -30,7 +38,9 @@ const Header = () => {
         </a>
 
         <nav
-          className={`${openNavigation ? "flex" : "hidden"} fixed top-[5rem] 
+          className={`${
+            openNavigation ? "flex h-full" : "hidden"
+          } fixed top-[5rem] 
         left-0 right-0 bg-[var(--n-8)] lg:static
          lg:flex lg:mx-auto lg:bg-transparent`}
         >
@@ -42,6 +52,7 @@ const Header = () => {
               <a
                 key={item.id}
                 href={item.url}
+                onClick={handleClick}
                 className={`block relative font-code text-2xl
                 uppercase text-[var(--n-1)] transition-colors
                 hover:text-[var(--color-1)]
@@ -58,10 +69,10 @@ const Header = () => {
                 {item.title}
               </a>
             ))}
-            <HamburgerMenu />
           </div>
+          <HamburgerMenu />
         </nav>
-        <div className="hidden lg:flex items-center space-x-4">
+        <div className="hidden lg:flex items-center space-x-5">
           <a
             href="#signup"
             className="button text-[12px] text-[var(--n-1)]/50 
@@ -73,6 +84,13 @@ const Header = () => {
             Sign In
           </Button>
         </div>
+        <Button
+          className="ml-auto lg:hidden"
+          px="px-3"
+          onClick={toggleNavigation}
+        >
+          <MenuSvg openNavigation={openNavigation} />
+        </Button>
       </div>
     </div>
   );
